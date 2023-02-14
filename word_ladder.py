@@ -95,6 +95,6 @@ def _adjacent(word1, word2):
         for i in range(len(word1)):
             if word1[i] != word2[i]:
                 mistakesallowed -= 1
-                if (mistakesAllowed < 0):
+                if (mistakesallowed < 0):
                     return False
         return True
