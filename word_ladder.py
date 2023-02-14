@@ -1,7 +1,8 @@
 #!/bin/python3
+from collections import deque
 
-
-def word_ladder(start_word, end_word, dictionary_file='words5.dict'):
+dict = open('words5.dict', 'r')
+def word_ladder(start_word, end_word, dictionary_file = 'words5.dict'):
     '''
     Returns a list satisfying the following properties:
 
@@ -28,22 +29,25 @@ def word_ladder(start_word, end_word, dictionary_file='words5.dict'):
     Whenever it is impossible to generate a word ladder between the two words,
     the function returns `None`.
     '''
+
+    with open(dictionary_file) as f:
+        dict  = [line.rstrip('/n') for line in f]
     s = []
-    q = []
+    q = deque()
     s.append(start_word)
     q.append(s)
-    stack_copy = []
-    while len(q) != 0:
-        q.pop()
-        for word in dictionary_file:
-            if _adjacent(word, s.pop()):
-                if word == end_word:
-                    stack.append(word) 
-                    return stack
-            stack_copy = s
+    while q:
+        stack2 = q.popleft()
+        for word in dict:
+            if s:
+                if _adjacent(word, s.pop()):
+                    if word == end_word:
+                        stack.append(word) 
+                        return stack
+            stack_copy = stack2[:]
             stack_copy.append(word)
-        q.append(stack_copy)
-        del dictionary_file[word]
+            q.append(stack_copy)
+            dict.remove(word)
 
 def verify_word_ladder(ladder):
     '''
@@ -56,6 +60,12 @@ def verify_word_ladder(ladder):
     False
     '''
 
+    if ladder == None:
+        return False
+    for a, b in zip(ladder, ladder[1:]):
+        if not _adjacent(a, b):
+            return False
+    return True
 
 def _adjacent(word1, word2):
     '''
@@ -67,6 +77,7 @@ def _adjacent(word1, word2):
     >>> _adjacent('stone','money')
     False
     '''
+
     mistakesAllowed = 1
     if word1 == word2:
         return False
@@ -79,3 +90,4 @@ def _adjacent(word1, word2):
                 if(mistakesAllowed < 0):  
                     return False
           return True
+word_ladder('stone', 'money')
