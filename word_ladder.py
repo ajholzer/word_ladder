@@ -1,7 +1,6 @@
 #!/bin/python3
 from collections import deque
 
-dict = open('words5.dict', 'r')
 def word_ladder(start_word, end_word, dictionary_file = 'words5.dict'):
     '''
     Returns a list satisfying the following properties:
@@ -31,23 +30,26 @@ def word_ladder(start_word, end_word, dictionary_file = 'words5.dict'):
     '''
 
     with open(dictionary_file) as f:
-        dict  = [line.rstrip('/n') for line in f]
+        dict  = [line.rstrip('\n') for line in f]
     s = []
     q = deque()
     s.append(start_word)
     q.append(s)
+    if start_word == end_word:
+        return s
+    if start_word == '' or end_word == '':
+        return None
     while q:
         stack2 = q.popleft()
         for word in dict:
-            if s:
-                if _adjacent(word, s.pop()):
-                    if word == end_word:
-                        stack.append(word) 
-                        return stack
-            stack_copy = stack2[:]
-            stack_copy.append(word)
-            q.append(stack_copy)
-            dict.remove(word)
+            if _adjacent(word, stack2[-1]):
+                if word == end_word:
+                    stack2.append(word) 
+                    return stack2
+                stack_copy = stack2[:]
+                stack_copy.append(word)
+                q.append(stack_copy)
+                dict.remove(word)
 
 def verify_word_ladder(ladder):
     '''
@@ -90,4 +92,4 @@ def _adjacent(word1, word2):
                 if(mistakesAllowed < 0):  
                     return False
           return True
-word_ladder('stone', 'money')
+
